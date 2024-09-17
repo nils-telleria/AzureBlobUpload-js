@@ -16,7 +16,7 @@ const uploadFiles = async () => {
 		}
 
 		// Create a new BlobServiceClient
-		const blobServiceClient = new BlobServiceClient(blobSasUrl);		
+		const blobServiceClient = new BlobServiceClient(sasUrl);
 
 		// Get a container client from the BlobServiceClient
 		const containerClient = blobServiceClient.getContainerClient(reconciliationId);
