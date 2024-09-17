@@ -3,6 +3,7 @@ const { BlobServiceClient } = require("@azure/storage-blob");
 // Prerequisite: Call "https://iq-services-reconciliation-int.azure.development.k8s.iqmetrix.net/<reconciliation-id>/allocateupload" and obtain the SAS URL.
 // Update blobSasUrl with the Blob service SAS URL string and upload directly to Azure.
 //const blobSasUrl = "https://iqreconcilevendorfiles.blob.core.windows.net/uploads-523806?sv=2024-08-04&se=2024-08-23T06%3A58%3A00Z&sr=c&sp=w&sig=diI8OndxCB5iwbKwhFBDCN5sN3MaUbpPu1VW%2BT3DP%2FU%3D";
+const messageArea = document.getElementById('message-area');
 
 // Upload files to the container...
 const uploadFiles = async () => {
@@ -21,17 +22,17 @@ const uploadFiles = async () => {
 		// Get a container client from the BlobServiceClient
 		const containerClient = blobServiceClient.getContainerClient(reconciliationId);
 
-		console.log("Uploading files...");
+		messageArea.value = "Uploading files...\n";
 		const promises = [];
 		for (const file of document.getElementById("file-input").files) {
 			const blockBlobClient = containerClient.getBlockBlobClient(file.name);
 			promises.push(blockBlobClient.uploadData(file));
 		}
 		await Promise.all(promises);
-		console.log("Done.");
+		messageArea.value += "Done.\n";
 	}
 	catch (error) {
-		console.log(error.message);
+		messageArea.value += error.message;
 	}
 }
 
